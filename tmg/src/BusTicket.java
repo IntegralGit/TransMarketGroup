@@ -7,8 +7,6 @@
  */
 public class BusTicket {
 
-    private static int[] BusTickets = new int[5];
-
 
     public boolean isLucky(int x[]){
         int A = 0;
