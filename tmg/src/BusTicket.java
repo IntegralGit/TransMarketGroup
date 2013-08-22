@@ -8,17 +8,18 @@
 public class BusTicket {
 
 
-    public boolean isLucky(int x[]){
+    //Add regular integer next then parse then split the string
+
+    public boolean isLucky(int x[]){     //will accept a 0 index 6 digit array
         int A = 0;
         int B = 0;
 
         for (int i = 0; i < x.length;++i)
         {
 
-
-            if (i < 3)
+            if (i < 3)   //sum first three of array
                 A += x[i];
-            else
+            else         //sum the rest
                 B += x[i];
         }
 
