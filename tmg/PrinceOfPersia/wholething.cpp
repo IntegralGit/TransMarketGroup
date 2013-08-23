@@ -8,21 +8,20 @@
 // clock, clock_t, CLOCKS_PER_SEC, time
 using namespace std;
 /* Probability of turning at each step. */
-const double kTurnRate = 0.5;
+const double kTurnRate = 0.2;
 /* Time to wait, in seconds, between frames. */
-const double kWaitTime = 0.5;
+const double kWaitTime = 0.1;
 /* Number of food pellets that must be eaten to win. */
 const int kMaxFood = 20;
 /* Constants for the different tile types. */
-const char kNoTile    = ' ';
-const char kEmptyTile = '.';
-const char kWallTile = 'o';
-const char kFoodTile = '2';
-const char kSnakeTile = '1';
+const char kEmptyTile = ' ';
+const char kWallTile = '#';
+const char kFoodTile = '$';
+const char kSnakeTile = '*';
 /* The string used to clear the display before printing the game board. Windows
 * systems should use "CLS", Mac OS X or Linux users should use "clear."
 */
-const string kClearCommand = "clear";
+const string kClearCommand = "CLS";
 /* A struct encoding a point in a two-dimensional grid. */
 struct pointT
 {
@@ -113,7 +112,7 @@ getline(input, game.world[row]);
 /* Check to see if the * character (snake start position)
 * is in this line. If so, make the snake.
 */
-int col = game.world[row].find('1');
+int col = game.world[row].find('*');
 if(col != string::npos)
 game.snake.push_back(MakePoint(row, col));
 }
@@ -134,11 +133,9 @@ bool Crashed(pointT head, gameT& game)
 /* We crashed if the head is out of bounds, on a wall, or on another
 * snake piece.
 */
-
-
 return !InWorld(head, game) ||
 game.world[head.row][head.col] == kSnakeTile ||
-game.world[head.row][head.col] == kWallTile || game.world[head.row][head.col] == kNoTile;
+game.world[head.row][head.col] == kWallTile;
 }
 /* Returns the next position occupied by the head if the snake is moving
 * in the direction dx, dy.
@@ -153,28 +150,12 @@ nextSpot.row += dy;
 return nextSpot;
 }
 
-
-
 void PerformAI(gameT& game)
 {
 /* Look where we're going to be next step. */
 pointT nextSpot = GetNextPosition(game, game.dx, game.dy);
 /* If this crashes us or we just feel like turning, turn. */
-
-bool isWall = (game.world[nextSpot.row][nextSpot.col] == kWallTile);
-if(isWall)
-{
-pointT lookOver = GetNextPosition(game,nextSpot.row,nextSpot.col);
-bool isNoWallBehindWall = (game.world[nextSpot.row][nextSpot.col] == kWallTile);
-bool isNothingBehindWall = (game.world[nextSpot.row][nextSpot.col] == kNoTile);
-    if(isNoWallBehindWall && isNothingBehindWall){
-        game.world[nextSpot.row][nextSpot.col] = kEmptyTile;
-    }
-
-}
-
-
-if(Crashed(nextSpot, game))//|| RandomChance(kTurnRate))
+if(Crashed(nextSpot, game) || RandomChance(kTurnRate))
 {
 /* Compute what direction we'd be facing if we turned left or
 * right. From linear algebra we have the following:
@@ -201,10 +182,8 @@ bool canRight = !Crashed(GetNextPosition(game, rightDx, rightDy), game);
 * randomly. If we can't turn, don't.
 */
 bool willTurnLeft;
-
 if(!canLeft && !canRight)
 return;
-
 else if(canLeft && !canRight)
 willTurnLeft = true;
 else if(!canLeft && canRight)
@@ -222,18 +201,13 @@ bool MoveSnake(gameT& game)
 pointT nextSpot = GetNextPosition(game, game.dx, game.dy);
 /* Check for dead. */
 if(Crashed(nextSpot, game))
- return false;
-
+return false;
 /* Remember whether we just ate food. */
 bool isFood = (game.world[nextSpot.row][nextSpot.col] == kFoodTile);
 /* Update the display. */
 game.world[nextSpot.row][nextSpot.col] = kSnakeTile;
 /* Push new head. */
 game.snake.push_front(nextSpot);
-
-
-
-
 /* If we got food, pick a new spot and don't remove the tail. This causes us
 * to extend by one spot.
 */
@@ -294,7 +268,7 @@ PrintWorld(game);
 PerformAI(game);
 /* Move the snake and abort if we crashed. */
 if(!MoveSnake(game))
-break;//destroyWall
+break;
 Pause();
 }
 DisplayResult(game);
