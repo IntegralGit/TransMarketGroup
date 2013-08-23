@@ -25,5 +25,6 @@ for e in a:
 			
 #	print ''
 
+#Here is your Real Time Bid Ask Spread
 print len(bid) , len(ask) , len(bid)-len(ask)
 _graph = plot(ask,bid)

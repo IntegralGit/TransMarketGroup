@@ -66,8 +66,11 @@ public class NumbersToWords {
 
 
     public  String convert(long number) {
-        // 0 to 999 999 999 999
-        if (number == 0) { return "zero"; }
+
+        if (number == 0)
+       {
+            return "zero";
+       }
 
         String snumber = Long.toString(number);
 
@@ -76,29 +79,25 @@ public class NumbersToWords {
         DecimalFormat df = new DecimalFormat(mask);
         snumber = df.format(number);
 
-        // XXXnnnnnnnnn
         int billions = Integer.parseInt(snumber.substring(0,3));
-        // nnnXXXnnnnnn
         int millions  = Integer.parseInt(snumber.substring(3,6));
-        // nnnnnnXXXnnn
         int hundredThousands = Integer.parseInt(snumber.substring(6,9));
-        // nnnnnnnnnXXX
         int thousands = Integer.parseInt(snumber.substring(9,12));
 
-        String tradBillions;
+        String Billions;
         switch (billions) {
             case 0:
-                tradBillions = "";
+                Billions = "";
                 break;
             case 1 :
-                tradBillions = convertLessThanOneThousand(billions)
+                Billions = convertLessThanOneThousand(billions)
                         + " billion ";
                 break;
             default :
-                tradBillions = convertLessThanOneThousand(billions)
+                Billions = convertLessThanOneThousand(billions)
                         + " billion ";
         }
-        String result =  tradBillions;
+        String result =  Billions;
 
         String tradMillions;
         switch (millions) {
