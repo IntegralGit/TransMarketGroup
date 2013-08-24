@@ -129,20 +129,6 @@ pt.col < game.numCols &&
 pt.row < game.numRows;
 }
 
-bool Crashed(pointT head, gameT& game)
-{
-/* We crashed if the head is out of bounds, on a wall, or on another
-* snake piece.
-*/
-
-
-return !InWorld(head, game) ||
-game.world[head.row][head.col] == kSnakeTile /*||
-game.world[head.row][head.col] == kWallTile*/  || game.world[head.row][head.col] == kNoTile;
-}
-/* Returns the next position occupied by the head if the snake is moving
-* in the direction dx, dy.
-*/
 pointT GetNextPosition(gameT& game, int dx, int dy)
 {
 /* Get the head. */
@@ -152,6 +138,44 @@ nextSpot.col += dx;
 nextSpot.row += dy;
 return nextSpot;
 }
+
+
+bool Crashed(pointT head, gameT& game)
+{
+/* We crashed if the head is out of bounds, on a wall, or on another
+* snake piece.
+*/
+
+
+if(game.world[head.row][head.col] == kWallTile)
+{
+    pointT nextSpot = GetNextPosition(game, head.row, head.col);
+    if(game.world[nextSpot.row][nextSpot.col] == kNoTile)
+    {
+/*
+
+            game.world[nextSpot.row][nextSpot.col] = kEmptyTile;
+            game.world[nextSpot.row][nextSpot.col] = kSnakeTile;
+            */
+/* Push new head. *//*
+
+            game.snake.push_front(nextSpot);
+            game.world[game.snake.back().row][game.snake.back().col] = kEmptyTile;
+            game.snake.pop_back();
+
+*/
+
+    }
+
+}
+
+return !InWorld(head, game) || game.world[head.row][head.col] == kSnakeTile || game.world[head.row][head.col] == kNoTile;
+
+}
+/* Returns the next position occupied by the head if the snake is moving
+* in the direction dx, dy.
+*/
+
 
 /*void checkWall(gameT& game)
 {
@@ -219,32 +243,28 @@ bool canRight = !Crashed(GetNextPosition(game, rightDx, rightDy), game);
 * we're facing. If we can choose either direction, pick one
 * randomly. If we can't turn, don't.
 */
-    bool isWall;
+  /*  bool isWall;
     bool isEmpty;
     isWall = (game.world[nextSpot.row][nextSpot.col] == kWallTile); //break wall if nothing on other side
-    //isEmpty = (game.world[nextnextSpot.row][nextnextSpot.col] == kEmptyTile);
+    isEmpty = (game.world[nextnextSpot.row][nextnextSpot.col] == kNoTile);
+*/
+
+    bool willTurnLeft;
+
+    if(!canLeft && !canRight)
+    return;
+
+    else if(canLeft && !canRight)
+    willTurnLeft = true;
+    else if(!canLeft && canRight)
+    willTurnLeft = false;
+    else
+    willTurnLeft = RandomChance(0.5);
 
 
-    //if not wall left and right go down
-    //
 
-
-
-    //bool isWall = game.world[nextSpot.row][nextSpot.col] == kWallTile;
-    if (isWall){
-        if(game.world[nextnextSpot.row][nextnextSpot.col] == kEmptyTile){
-        game.world[nextSpot.row][nextSpot.col] = kEmptyTile;
-        game.world[nextSpot.row][nextSpot.col] = kSnakeTile;
-        /* Push new head. */
-        game.snake.push_front(nextSpot);
-        game.world[game.snake.back().row][game.snake.back().col] = kEmptyTile;
-        game.snake.pop_back();
-
-
-        //game.dx += 1;// : rightDx;
-        //game.dy = rightDy;// : rightDy;
-        }
-    }
+    game.dx = willTurnLeft? leftDx : rightDx;
+    game.dy = willTurnLeft? leftDy : rightDy;
 
 
 /*
