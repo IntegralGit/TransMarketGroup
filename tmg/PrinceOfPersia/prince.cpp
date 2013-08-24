@@ -137,8 +137,8 @@ bool Crashed(pointT head, gameT& game)
 
 
 return !InWorld(head, game) ||
-game.world[head.row][head.col] == kSnakeTile ||
-game.world[head.row][head.col] == kWallTile || game.world[head.row][head.col] == kNoTile;
+game.world[head.row][head.col] == kSnakeTile /*||
+game.world[head.row][head.col] == kWallTile*/  || game.world[head.row][head.col] == kNoTile;
 }
 /* Returns the next position occupied by the head if the snake is moving
 * in the direction dx, dy.
@@ -153,29 +153,47 @@ nextSpot.row += dy;
 return nextSpot;
 }
 
+/*void checkWall(gameT& game)
+{
+int leftDx = -game.dy;
+int leftDy = game.dx;
+int rightDx = game.dy;
+int rightDy = -game.dx;
+
+pointT nextSpot = GetNextPosition(game,game.dx,game.dy);
+//pointT lookOver = GetNextPosition(game,nextSpot.row,nextSpot.col);
+bool isWall = game.world[nextSpot.row][nextSpot.col] == kWallTile; //checks to see if there is a wall
+//bool clearPath = game.world[lookOver.row][lookOver.col] == kEmptyTile; //checks to see if there is nothing on other side of wall
+if(isWall)
+{
+    game.world[game.snake.front().row][game.snake.front().col] = kEmptyTile;
+    game.dx = leftDx;
+    game.dy = rightDy;
+
+    *//*game.dx = nextSpot.row;
+    cout<<game.dx;
+    game.dy = nextSpot.col;
+    cout<<game.dy;*//*
+    //game.snake.push_front(nextSpot);
+
+}
+}*/
 
 
 void PerformAI(gameT& game)
 {
 /* Look where we're going to be next step. */
 pointT nextSpot = GetNextPosition(game, game.dx, game.dy);
+pointT nextnextSpot = GetNextPosition(game, nextSpot.row, nextSpot.col);//we want to break the wall
+
 /* If this crashes us or we just feel like turning, turn. */
 
-bool isWall = (game.world[nextSpot.row][nextSpot.col] == kWallTile);
-if(isWall)
+if(Crashed(nextSpot, game) || RandomChance(kTurnRate))
 {
-pointT lookOver = GetNextPosition(game,nextSpot.row,nextSpot.col);
-bool isNoWallBehindWall = (game.world[nextSpot.row][nextSpot.col] == kWallTile);
-bool isNothingBehindWall = (game.world[nextSpot.row][nextSpot.col] == kNoTile);
-    if(isNoWallBehindWall && isNothingBehindWall){
-        game.world[nextSpot.row][nextSpot.col] = kEmptyTile;
-    }
-
-}
 
 
-if(Crashed(nextSpot, game))//|| RandomChance(kTurnRate))
-{
+
+
 /* Compute what direction we'd be facing if we turned left or
 * right. From linear algebra we have the following:
 *
@@ -193,6 +211,7 @@ int leftDx = -game.dy;
 int leftDy = game.dx;
 int rightDx = game.dy;
 int rightDy = -game.dx;
+
 /* Check if turning left or right will cause us to crash. */
 bool canLeft = !Crashed(GetNextPosition(game, leftDx, leftDy), game);
 bool canRight = !Crashed(GetNextPosition(game, rightDx, rightDy), game);
@@ -200,6 +219,35 @@ bool canRight = !Crashed(GetNextPosition(game, rightDx, rightDy), game);
 * we're facing. If we can choose either direction, pick one
 * randomly. If we can't turn, don't.
 */
+    bool isWall;
+    bool isEmpty;
+    isWall = (game.world[nextSpot.row][nextSpot.col] == kWallTile); //break wall if nothing on other side
+    //isEmpty = (game.world[nextnextSpot.row][nextnextSpot.col] == kEmptyTile);
+
+
+    //if not wall left and right go down
+    //
+
+
+
+    //bool isWall = game.world[nextSpot.row][nextSpot.col] == kWallTile;
+    if (isWall){
+        if(game.world[nextnextSpot.row][nextnextSpot.col] == kEmptyTile){
+        game.world[nextSpot.row][nextSpot.col] = kEmptyTile;
+        game.world[nextSpot.row][nextSpot.col] = kSnakeTile;
+        /* Push new head. */
+        game.snake.push_front(nextSpot);
+        game.world[game.snake.back().row][game.snake.back().col] = kEmptyTile;
+        game.snake.pop_back();
+
+
+        //game.dx += 1;// : rightDx;
+        //game.dy = rightDy;// : rightDy;
+        }
+    }
+
+
+/*
 bool willTurnLeft;
 
 if(!canLeft && !canRight)
@@ -211,9 +259,18 @@ else if(!canLeft && canRight)
 willTurnLeft = false;
 else
 willTurnLeft = RandomChance(0.5);
-/* Based on the direction, turn appropriately. */
+
+
+*/
+/* Based on the direction, turn appropriately. *//*
+
+
 game.dx = willTurnLeft? leftDx : rightDx;
 game.dy = willTurnLeft? leftDy : rightDy;
+
+*/
+
+
 }
 }
 bool MoveSnake(gameT& game)
@@ -241,6 +298,7 @@ if(isFood)
 {
 PlaceFood(game);
 ++game.numEaten;
+
 }
 else
 {

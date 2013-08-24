@@ -7,7 +7,6 @@
  */
 public class BusTicket {
 
-
     //Add regular integer next then parse then split the string
 
     public boolean isLucky(int x[]){     //will accept a 0 index 6 digit array
@@ -31,8 +30,6 @@ public class BusTicket {
 
 
     }
-
-
 
     public static void main (String[] args){
 
