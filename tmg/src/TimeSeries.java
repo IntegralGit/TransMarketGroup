@@ -7,10 +7,7 @@
  */
 
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Collections;
 import java.util.NavigableMap;
 
 public class TimeSeries {
