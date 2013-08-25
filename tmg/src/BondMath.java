@@ -38,7 +38,7 @@ public class BondMath {
         BondMath x = new BondMath();
         double bondreturn = x.getReturn(facevalue,offer,yearScale);
 
-        System.out.print(bondreturn );
+        System.out.print(bondreturn);
 
 
     }

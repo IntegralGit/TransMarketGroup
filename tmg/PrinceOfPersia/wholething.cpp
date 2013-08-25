@@ -227,6 +227,7 @@ return true;
 void Pause()
 {
 clock_t start = clock();
+clock_t start = clock();
 while(static_cast<double>(clock() - start) / CLOCKS_PER_SEC < kWaitTime);
 }
 /* Displays the result of the game. */
