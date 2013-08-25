@@ -28,9 +28,6 @@ public class TimeSeries {
     {
 
         _value.put(time,price);
-
-
-
     }
 
 

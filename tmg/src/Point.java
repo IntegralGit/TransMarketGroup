@@ -18,6 +18,8 @@ public class Point
         _lon = lon;
     }
 
+
+
     public double getLat()
     {
         return _lat;
@@ -26,7 +28,21 @@ public class Point
     {
         return _lon;
     }
+    public double getAngle(Point a,Point b)
+    {
+        double lat1 = Math.toRadians(a.getLat());
+        double lat2 = Math.toRadians(b.getLat());
+        double lon1 = Math.toRadians(a.get_lon());
+        double lon2 = Math.toRadians(b.get_lon());
 
+        double dy = lat2 - lat1;
+        double dx = Math.cos(Math.PI/180*lat1)*(lon1 - lon2);
+        double angle = Math.atan2(dy, dx);
+
+
+         return angle;
+
+    }
     public double getDistance(Point a,Point b)
     {
         double R = 6371; // km
@@ -37,12 +53,12 @@ public class Point
         double lat1 = Math.toRadians(a.getLat());
         double lat2 = Math.toRadians(b.getLat());
 
-        /*double a = Math.sin(dLat/2) * Math.sin(dLat/2) +  Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double aa = (Math.sin(dLat/2) * Math.sin(dLat/2) +  Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2));
+        double c = 2 * Math.atan2(Math.sqrt(aa), Math.sqrt(1-aa));
         double d = R * c;
-*/
 
-        return R;
+
+        return d;
     }
 
 
