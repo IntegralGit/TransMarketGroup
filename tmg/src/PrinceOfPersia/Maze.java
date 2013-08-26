@@ -6,8 +6,8 @@ import java.util.Vector;
 
 /**
  * Created with IntelliJ IDEA.
- * User: rotten
- * Date: 8/25/13
+ * User: Piotr
+ * Date: 8/22/13
  * Time: 8:06 PM                  ECE 333-AB1
 11052 Class
 11:00 am-1:50 pm

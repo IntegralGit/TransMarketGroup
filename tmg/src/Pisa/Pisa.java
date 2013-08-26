@@ -2,7 +2,7 @@ package Pisa;
 
 /**
  * Created with IntelliJ IDEA.
- * User: rotten
+ * User: Piotr
  * Date: 8/22/13
  * Time: 3:38 PM
  * To change this template use File | Settings | File Templates.

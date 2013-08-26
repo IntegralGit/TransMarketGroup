@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 /**
  * Created with IntelliJ IDEA.
- * User: rotten
- * Date: 8/25/13
+ * User: Piotr
+ * Date: 8/22/13
  * Time: 7:16 PM
  * To change this template use File | Settings | File Templates.
  */
