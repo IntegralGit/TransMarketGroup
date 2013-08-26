@@ -8,7 +8,10 @@ import java.util.Vector;
  * Created with IntelliJ IDEA.
  * User: rotten
  * Date: 8/25/13
- * Time: 8:06 PM
+ * Time: 8:06 PM                  ECE 333-AB1
+11052 Class
+11:00 am-1:50 pm
+2SEL 4050
  * To change this template use File | Settings | File Templates.
  */
 public class Maze {
@@ -32,9 +35,7 @@ public class Maze {
     public void loadMap()
     {
 
-        level = 3;
-        rows   = 9;
-        cols   = 3;
+
         graph = new Vector<String[][]>();
         int k = 0;
         int p = 0;
@@ -70,14 +71,16 @@ public class Maze {
 
 
 
-            if(k == 3)
+            if(k == 3)       level = 3;
+        rows   = 9;
+        cols   = 3;
             {
                 System.out.print("yes\n");
                 k = 0;
                 count = 0;
 
 
-                graph.add(maze);
+                //graph.add(maze);
 
 
             }

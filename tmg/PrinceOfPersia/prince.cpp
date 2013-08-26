@@ -40,9 +40,7 @@ int levels;
 int numEaten;
 
 };
-// The snake body
-// The snake direction
-// How much food we've eaten.
+
 /* Reads a line of text from the user. */
 
 gameT init()
@@ -89,7 +87,7 @@ int col = rand() % game.numCols;
 /*if(game.world[row][col] == kEmptyTile)
 {
 game.world[row][col] = kFoodTile;
-return;     /* Returns the next position occupied by the head if the snake is moving
+return;      Returns the next position occupied by the head if the snake is moving
 * in the direction dx, dy.
 */
 
@@ -206,32 +204,39 @@ return !InWorld(head, game.front()) || game.front().world[head.row][head.col] ==
 
 }
 
-void checkForCol(vector<gameT> & core)
+/*void checkForCol(vector<gameT> & core)
 {
 
 gameT game = core.front();
 pointT nextSpot = GetNextPosition(core, game.dx, game.dy);
-
+bool isTile = false;
 {
 
 
-        bool isTile = (game.world[nextSpot.row][nextSpot.col] == kEmptyTile);
+        isTile = (game.world[nextSpot.row][nextSpot.col] == kEmptyTile);
         if (isTile){
 
              bool under = (game.world[nextSpot.row + 5 ][nextSpot.col] == kEmptyTile);
              if(under){
                 cout<<"\n\n\n\n\n\n\n\n\n\n\n\n "<< nextSpot.row + 5 <<" --- "<<nextSpot.col<< " under "<<under<<"\n";
                 //game.world[2][game.prince.col] = kSnakeTile;
-                /* Push new head. */
-                game.prince.row = 1;
-                game.prince.col = 0;
+                *//* Push new head. *//*
+                //game.world[nextSpot.row + 5 ][nextSpot.col+5] = kSnakeTile;
+		game.world[nextSpot.row][nextSpot.col] = kEmptyTile;
+		game.world[nextSpot.row + 5 ][nextSpot.col] = kSnakeTile;
+		//vector<gameT> *dummy = new vector<gameT>();
+		//dummy.push_back(game);
+                pointT nextSpot2 = GetNextPosition(core,game.dx +5, game.dy);
+		game.prince = nextSpot2;
+		game.levels = 2;
+		core.push_back(game);
 
-                for(int i = 0   ; i < core.size(); ++i)
-                for(int j = 0; j < core[i].world.size(); ++j)//because we push the front() into function
-                {
-                    cout<<"i "<<i<<"---j "<<j <<" ";
-                    cout << core.at(i).world[j] << endl;
-                    }
+                //for(int i = 0   ; i < game.size(); ++i)
+                //for(int j = 0; j < game.world.size(); ++j)//because we push the front() into function
+                //{
+                //    cout<<"i "<<i<<"---j "<<j <<" ";
+                //    cout << game.world[i][j] << endl;
+                //    }
 
              }
 
@@ -243,9 +248,30 @@ pointT nextSpot = GetNextPosition(core, game.dx, game.dy);
 
 }
 
+}*/
+
+bool checkForCol(vector<gameT>& core)
+{
+gameT game = core.front();
+pointT nextSpot = GetNextPosition(core,game.dx,game.dy);
+	bool isTile = (game.world[nextSpot.row][nextSpot.col] == kEmptyTile);
+        if (isTile)
+	{
+		bool under = (game.world[nextSpot.row + 5 ][nextSpot.col] == kEmptyTile);
+         	if(under)
+		{
+			game.levels -= 1;
+			return true;
+		}
+		else
+		{	
+			return false;	
+		
+		}
+	}
+
+
 }
-
-
 void PerformAI(vector<gameT>& game)
 {
 /* Look where we're going to be next step. */
@@ -273,6 +299,8 @@ if(Crashed(nextSpot, game) || RandomChance(kTurnRate))
 |0 1||x| --> x' = y
 * |y'| = |-1 0||y| --> y' = -x
 */
+
+
 int leftDx = -game.front().dy;
 int leftDy = game.front().dx;
 int rightDx = game.front().dy;
@@ -305,10 +333,9 @@ bool canRight = !Crashed(GetNextPosition(game, rightDx, rightDy), game);
     willTurnLeft = RandomChance(0.5);
 
 
-
+    
     game.front().dx = willTurnLeft? leftDx : rightDx;
     game.front().dy = willTurnLeft? leftDy : rightDy;
-
 
 
 
@@ -319,24 +346,27 @@ bool canRight = !Crashed(GetNextPosition(game, rightDx, rightDy), game);
 }
 bool MoveSnake(vector<gameT>& game)
 {
+
+
+game.front().levels = 3;
 /* Compute new head. */
 pointT nextSpot = GetNextPosition(game, game.front().dx, game.front().dy);
 /* Check for dead. */
 if(Crashed(nextSpot, game))
- return false;
+  return false;
 
 /* Remember whether we just ate food. */
 bool isFood = (game.front().world[nextSpot.row][nextSpot.col] == kFoodTile);
+
+
 //bool noColUnder = (game.world[underSpot.row][underSpot.col] == kWallTile)
 
-checkForCol(game);
-
+/* Check for dead. */
 /* Update the display. */
 game.front().world[game.front().prince.row][game.front().prince.col] = kEmptyTile;
 game.front().world[nextSpot.row][nextSpot.col] = kSnakeTile;
 /* Push new head. */
 game.front().prince = nextSpot;
-
 
 
 /* Update the display. *//*
@@ -347,6 +377,8 @@ game.front().prince = nextSpot;*/
 
 /* If we got food, pick a new spot and don't remove the tail. This causes us
 * to extend by one spot.
+
+
 */
 if(isFood)
 {
@@ -393,6 +425,7 @@ LoadWorld(game, input);
 /* Runs the simulation and displays the result. */
 void RunSimulation(vector<gameT> & game)
 {
+game.front().levels = 3;
 /* Keep looping while we haven't eaten too much. */
 while(game.front().numEaten < kMaxFood)
 {
