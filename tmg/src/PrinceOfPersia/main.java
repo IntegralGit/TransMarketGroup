@@ -18,14 +18,6 @@ public class main {
 
         Maze test = new Maze();
         //test.printMap();
-
-
-
-
-
-
-
-
         //going to be the update
     }
 
