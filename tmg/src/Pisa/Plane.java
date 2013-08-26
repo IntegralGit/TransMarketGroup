@@ -1,3 +1,5 @@
+package Pisa;
+
 /**
  * Created with IntelliJ IDEA.
  * User: rotten
@@ -9,7 +11,7 @@ public class Plane
 {
     private Point _a,_b,_c;
 
-    public Plane (Point a ,Point b, Point c)
+    public Plane (Point a , Point b, Point c)
     {
        _a = a;
        _b = b;

@@ -1,3 +1,5 @@
+package Pisa;
+
 /**
  * Created with IntelliJ IDEA.
  * User: rotten
@@ -28,7 +30,7 @@ public class Pisa
     double lon = 0.00;
 
     /*
-    Making Pisa plane with dummy variables
+    Making Pisa.Pisa plane with dummy variables
     */
     Point x_pisa = new Point(lat,lon);
     Point y_pisa = new Point(lat,lon);
@@ -46,13 +48,14 @@ public class Pisa
 
     if(checkIfPerpendicular(pisa,balcony))
         System.out.println("Balcony is Perpendicular");
-    System.out.println("Balcony is Not Perpendicular");
+    else
+        System.out.println("Balcony is Not Perpendicular");
 
 
 
      }
 
-    public static boolean checkIfPerpendicular(Plane a,Plane b)
+    public static boolean checkIfPerpendicular(Plane a, Plane b)
     {
         if( a.getX()*b.getX()+a.getY()*b.getY()+a.getZ()*a.getY() == 0)
             return true;
